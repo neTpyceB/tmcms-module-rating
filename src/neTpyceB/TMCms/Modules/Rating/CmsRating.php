@@ -6,5 +6,7 @@ defined('INC') or exit;
 
 class CmsRating
 {
+    public function _default() {
 
+    }
 }
