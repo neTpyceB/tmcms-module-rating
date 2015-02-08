@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/tmcms-module-rating.iml" filepath="$PROJECT_DIR$/.idea/tmcms-module-rating.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TMCms-module-rating.iml" filepath="$PROJECT_DIR$/.idea/TMCms-module-rating.iml" />
     </modules>
   </component>
 </project>

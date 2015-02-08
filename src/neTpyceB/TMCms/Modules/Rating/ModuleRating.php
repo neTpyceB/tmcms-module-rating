@@ -11,6 +11,10 @@ class ModuleRating implements IModule {
 	/** @var $this */
 	private static $instance;
 
+	public static $tables = [
+		'rating' => 'm_rating'
+	];
+
 	public static function getInstance() {
 		if (!self::$instance) self::$instance = new self;
 		return self::$instance;
