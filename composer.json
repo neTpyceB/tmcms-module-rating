@@ -2,20 +2,20 @@
   "name": "neTpyceB/TMCms-module-rating",
   "type": "library",
   "description": "Module Rating for TMCms",
-  "keywords": ["module", "rating"],
-  "homepage": "http://devp.lv/",
+  "keywords": ["module", "rating", "TMCms"],
+  "homepage": "http://devp.eu/",
   "license": "proprietary",
   "authors": [
     {
       "name": "Vadims Petrusevs",
-      "email": "info@petrik.lv",
-      "homepage": "http://petrik.lv/",
+      "email": "info@devp.eu",
+      "homepage": "http://devp.eu/",
       "role": "Developer"
     }
   ],
   "autoload": {
-    "psr-0": {
-      "neTpyceB\\TMCms": "src"
+    "psr-4": {
+      "TMCms\\Modules\\Rating\\": "src"
     }
   }
 }
