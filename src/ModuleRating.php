@@ -20,20 +20,22 @@ class ModuleRating implements IModule {
 	 * @param int $item_type
 	 * @param int $item_id
 	 * @param int $client_id
+	 * @param int $score
 	 * @return int
 	 */
-	public static function addScore($item_type, $item_id, $client_id) {
-		$score = self::checkScoreExists($item_type, $item_id, $client_id);
+	public static function addScore($item_type, $item_id, $client_id, $score) {
+		$rating = self::checkScoreExists($item_type, $item_id, $client_id);
 
-		if (!$score) {
-			$score = new RatingEntity;
-			$score->setItemId($item_id);
-			$score->setItemType($item_type);
-			$score->setClientId($client_id);
-			$score->save();
+		if (!$rating) {
+			$rating = new RatingEntity;
+			$rating->setItemId($item_id);
+			$rating->setItemType($item_type);
+			$rating->setClientId($client_id);
+			$rating->setScore($score);
+			$rating->save();
 		}
 
-		return $score->getId();
+		return $rating->getId();
 	}
 
 	/**
