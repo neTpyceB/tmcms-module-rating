@@ -59,20 +59,21 @@ class ModuleRating implements IModule {
 	 * @return float
      */
 	public static function getAverage(Entity $item) {
+
 		$rating_collection = new RatingEntityRepository;
 		$rating_collection->setWhereItemId($item->getId());
 		$rating_collection->setWhereItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
 		$rating_collection->addSimpleSelectFields(['id', 'score']);
 
-		$sum = 0;
+		$scores = [];
 		foreach ($rating_collection->getAsArrayOfObjectData() as $rating) {
-			$sum += $rating['score'];
+			$scores[] = $rating['score'];
 		}
 
-		if ($sum == 0) {
+		if (!$scores) {
 			return 0;
 		}
 
-		return round($rating_collection->getCountOfObjectsInCollection() / $sum, 2);
+		return round(array_sum($scores) / count($scores), 2);
 	}
 }
