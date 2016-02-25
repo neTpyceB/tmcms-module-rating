@@ -4,7 +4,7 @@ namespace TMCms\Modules\Rating;
 
 use TMCms\Modules\IModule;
 use TMCms\Modules\Rating\Entity\RatingEntity;
-use TMCms\Modules\Rating\entity\RatingEntityRepository;
+use TMCms\Modules\Rating\Entity\RatingEntityRepository;
 use TMCms\Orm\Entity;
 use TMCms\Strings\Converter;
 use TMCms\Traits\singletonInstanceTrait;
