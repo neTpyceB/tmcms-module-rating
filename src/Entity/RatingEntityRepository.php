@@ -1,29 +1,29 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Modules\Rating\Entity;
 
 use TMCms\Orm\EntityRepository;
+use TMCms\Orm\TableStructure;
 
+/**
+ * Class RatingEntityRepository
+ * @package TMCms\Modules\Rating\Entity
+ */
 class RatingEntityRepository extends EntityRepository {
     protected $table_structure = [
         'fields' => [
             'client_id' => [
-                'type' => 'index',
+                'type' => TableStructure::FIELD_TYPE_INDEX,
             ],
             'item_id' => [
-                'type' => 'index',
+                'type' => TableStructure::FIELD_TYPE_INDEX,
             ],
             'item_type' => [
-                'type' => 'varchar',
+                'type' => TableStructure::FIELD_TYPE_VARCHAR_255,
             ],
             'score' => [
-                'type' => 'int',
-                'length' => 3,
-            ],
-        ],
-        'indexes' => [
-            'item_type' => [
-                'type' => 'key',
+                'type' => TableStructure::FIELD_TYPE_UNSIGNED_INTEGER,
             ],
         ],
     ];

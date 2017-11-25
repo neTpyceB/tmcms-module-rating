@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Modules\Rating;
 
@@ -9,71 +10,61 @@ use TMCms\Orm\Entity;
 use TMCms\Strings\Converter;
 use TMCms\Traits\singletonInstanceTrait;
 
-defined('INC') or exit;
+\defined('INC') or exit;
 
+/**
+ * Class ModuleRating
+ * @package TMCms\Modules\Rating
+ */
 class ModuleRating implements IModule {
-	use singletonInstanceTrait;
+    use singletonInstanceTrait;
 
-	public static $tables = [
-		'rating' => 'm_ratings'
-	];
-
-	/**
-	 *
-	 * @param Entity $item
-	 * @param int $client_id
-	 * @param int $score
-	 * @return int
-	 */
-	public static function addScore(Entity $item, $client_id, $score) {
-		$rating = self::checkScoreExists($item, $client_id);
-
-		if (!$rating) {
-			$rating = new RatingEntity;
-			$rating->setItemId($item->getId());
-			$rating->setItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
-			$rating->setClientId($client_id);
-			$rating->setScore($score);
-			$rating->save();
-		}
-
-		return $rating->getId();
-	}
-
-	/**
-	 * @param Entity $item
-	 * @param int $client_id
-	 * @return RatingEntityRepository
-	 */
-	public static function checkScoreExists(Entity $item, $client_id) {
-		$rating_collection = new RatingEntityRepository;
-		$rating_collection->setWhereItemId($item->getId());
-		$rating_collection->setWhereItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
-		$rating_collection->setWhereClientId($client_id);
-
-		return $rating_collection->getFirstObjectFromCollection();
-	}
-
-	/**
-	 * @param Entity $item
-	 * @return float
+    /**
+     *
+     * @param Entity $item
+     * @param int $client_id
+     * @param int $score
+     * @return int
      */
-	public static function getAverage(Entity $item) {
+    public static function addScore(Entity $item, $client_id, $score): int
+    {
+        $rating = self::checkScoreExists($item, $client_id);
 
-		$rating_collection = new RatingEntityRepository;
-		$rating_collection->setWhereItemId($item->getId());
-		$rating_collection->setWhereItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
-		$rating_collection->addSimpleSelectFields(['id', 'score']);
+        if (!$rating) {
+            $rating = new RatingEntity;
+            $rating->setItemId($item->getId());
+            $rating->setItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
+            $rating->setClientId($client_id);
+            $rating->setScore($score);
+            $rating->save();
+        }
 
-		$scores = [];
-		foreach ($rating_collection->getAsArrayOfObjectData() as $rating) {
-			$scores[] = $rating['score'];
-		}
+        return (int)$rating->getId();
+    }
 
-		if (!$scores) {
-			return 0;
-		}
+    /**
+     * @param Entity $item
+     * @param int $client_id
+     *
+     * @return bool
+     */
+    public static function checkScoreExists(Entity $item, $client_id): bool
+    {
+        $rating_collection = new RatingEntityRepository;
+        $rating_collection->setWhereItemId($item->getId());
+        $rating_collection->setWhereItemType(Converter::classWithNamespaceToUnqualifiedShort($item));
+        $rating_collection->setWhereClientId($client_id);
 
-		return round(array_sum($scores) / count($scores), 2);
-	}
+        return $rating_collection->hasAnyObjectInCollection();
+    }
+
+    /**
+     * @param Entity $item
+     *
+     * @return float
+     */
+    public static function getAverage(Entity $item): float
+    {
+        return (float)q_value('SELECT AVG(`score`) FROM `'. (new RatingEntityRepository)->getDbTableName() .'` WHERE `item_id` = "'. (int)$item->getId() .'" and `item_type` = "'. sql_prepare($item->getUnqualifiedShortClassName()) .'"');
+    }
 }
